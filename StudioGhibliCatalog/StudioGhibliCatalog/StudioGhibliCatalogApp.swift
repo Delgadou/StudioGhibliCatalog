@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct StudioGhibliCatalogApp: App {
+    @State var model = MoviesCatalogModel()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MoviesCatalogView(model: model)
         }
     }
 }
