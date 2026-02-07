@@ -25,7 +25,7 @@ struct ShimmerModifier: ViewModifier {
                     endPoint: endPoint
                 )
                 .mask(content)
-                .onChange(of: isVisible) { visible in
+                .onChange(of: isVisible) { visible, _ in
                     if visible {
                         withAnimation(
                             .linear(duration: 1.5)

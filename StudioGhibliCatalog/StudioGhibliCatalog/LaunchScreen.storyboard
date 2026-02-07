@@ -24,7 +24,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splash-screen-image" translatesAutoresizingMaskIntoConstraints="NO" id="Vyi-cm-igW">
-                                <rect key="frame" x="16" y="346" width="361" height="160"/>
+                                <rect key="frame" x="0.0" y="322" width="393" height="209"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </imageView>
                         </subviews>
