@@ -11,36 +11,69 @@ struct MoviesCatalogView: View {
     @State var model: MoviesCatalogModel
 
     var body: some View {
-        NavigationStack {
-            ScrollView(showsIndicators: false) {
-                HStack(alignment: .top, spacing: 16) {
-                    LazyVStack(spacing: 16) {
-                        ForEach(model.splitedArray[0]) { movie in
-                            MovieBanner(movie: movie)
+        NavigationStack(path: $model.path) {
+            switch model.state {
+            case .loading:
+                ProgressView()
+            case .loaded:
+                CatalogView(model: $model)
+            case .error(let error):
+                VStack {
+                    Text("Error: \(error.localizedDescription)")
+                    Button("Retry") {
+                        Task {
+                            await model.loadMovies()
                         }
                     }
-
-                    LazyVStack(spacing: 16) {
-                        ForEach(model.splitedArray[1]) { movie in
-                            MovieBanner(movie: movie)
-                        }
-                    }
-                    .padding(.top, 40)
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("Movies")
-                        .font(.largeTitle.bold())
-                        .foregroundStyle(.textPrimary)
-                        .padding(.leading, 4)
-                        .fixedSize(horizontal: true, vertical: false)
-                }
-                .sharedBackgroundVisibility(.hidden)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding()
         }
+    }
+}
+
+struct CatalogView: View {
+    @Binding var model: MoviesCatalogModel
+
+    var body: some View {
+        ScrollView(showsIndicators: false) {
+            HStack(alignment: .top, spacing: 16) {
+                LazyVStack(spacing: 16) {
+                    ForEach(model.splitedArray[0]) { movie in
+                        MovieBanner(movie: movie)
+                            .onTapGesture { _ in
+                                model.navigateToDetails(movie: movie)
+                            }
+                    }
+                }
+                LazyVStack(spacing: 16) {
+                    ForEach(model.splitedArray[1]) { movie in
+                        MovieBanner(movie: movie)
+                    }
+                }
+                .padding(.top, 40)
+            }
+//            .sheet(for: Destination.self) { movie in
+//                MovieDetailsView(movie: movie)
+//            }
+            .navigationDestination(for: Destination.self) { destination in
+                switch destination {
+                case .movieDetails(let movie):
+                    MovieDetailsView(movie: movie)
+                }
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text("Movies")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(.textPrimary)
+                    .padding(.leading, 4)
+                    .fixedSize(horizontal: true, vertical: false)
+            }
+            .sharedBackgroundVisibility(.hidden)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
     }
 }
 
@@ -101,12 +134,3 @@ struct MovieBanner: View {
 #Preview {
     MoviesCatalogView(model: .init())
 }
-
-//.listStyle(.plain)
-//.scrollContentBackground(.hidden)
-//.navigationDestination(for: Destination.self) { movie in
-//    switch movie {
-//    case let .movieDetail(movie):
-//        MovieDetailsView(movie: movie)
-//    }
-//}
