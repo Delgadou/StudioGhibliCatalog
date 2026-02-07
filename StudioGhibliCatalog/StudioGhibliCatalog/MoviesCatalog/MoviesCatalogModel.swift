@@ -4,48 +4,68 @@
 //
 //  Created by Henrique Delgado on 03/02/26.
 //
+
 import Foundation
 import SwiftUI
 
 enum Destination: Hashable {
-    case movieDetail(Movie)
+    case movieDetails(Movie)
 }
 
 @MainActor
 @Observable
 class MoviesCatalogModel {
-    var destination: Destination?
-    var movieCatalog: [Movie] = []
-    var errorMessage: String?
+    enum State {
+        case loading
+        case loaded([Movie])
+        case error(Error)
+    }
 
+    private let movieService: MovieService = MovieService()
+//    var destination: Destination()
+    var path = NavigationPath()
+    var state: State = .loading {
+        didSet {
+            handleState()
+        }
+    }
+    var movieCatalog: [Movie] = []
     var splitedArray: [[Movie]] {
         movieCatalog.enumerated().reduce(into: [[], []]) { result, item in
             result[item.offset % 2].append(item.element)
         }
     }
-    var firstMovie: Movie {
-        return movieCatalog.first ?? moviesss
-    }
-
-    let moviesss = Movie(
-        id: "bil", title: "Bora bill", image: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/npOnzAbLh6VOIu3naU5QaEcTepo.jpg", description: "Bad bunny", release_date: "1997", rt_score: "95", running_time: "2025"
-    )
 
     init() {
-        Task {
-            await loadMovies()
-        }
+        handleState()
     }
 
     func loadMovies() async {
-        let result = await NetworkService().fetchMovies()
+        let result = await movieService.fetchMovies()
 
         switch result {
         case .success(let movies):
-            self.movieCatalog = movies
-            self.errorMessage = nil
+            self.state = .loaded(movies)
         case .failure(let error):
-            self.errorMessage = error.description
+            self.state = .error(error)
         }
+    }
+
+    func handleState() {
+        switch state {
+        case .loading:
+            Task {
+                await loadMovies()
+            }
+        case .loaded(let movies):
+            movieCatalog = movies
+        case .error:
+            break
+        }
+    }
+
+    func navigateToDetails(movie: Movie) {
+        path.append(Destination.movieDetails(movie))
+//        destination = .movieDetails(movie)
     }
 }
