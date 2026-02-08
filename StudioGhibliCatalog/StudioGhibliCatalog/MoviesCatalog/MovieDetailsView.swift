@@ -8,32 +8,34 @@
 import SwiftUI
 
 struct MovieDetailsView: View {
-    let movie: Movie
+    @State var model: MovieDetailsModel
 
     var body: some View {
         VStack(alignment: .leading) {
             ZStack {
-                AsyncImage(url: URL(string: movie.image)) { image in
+                AsyncImage(url: URL(string: model.movie.movie_banner)) { image in
                     image
                         .resizable()
                 } placeholder: {
-                    ProgressView()
+                    Color.gray
+                        .modifier(ShimmerModifier())
                 }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 200)
+            .cornerRadius(13)
 
-            Text(movie.title)
+            Text(model.movie.title)
                 .multilineTextAlignment(.leading)
                 .font(.largeTitle)
                 .bold()
 
-            Text(movie.release_date)
+            Text(model.movie.release_date)
                 .multilineTextAlignment(.leading)
                 .font(.title2)
                 .bold()
 
-            Text(movie.description)
+            Text(model.movie.description)
                 .multilineTextAlignment(.leading)
                 .font(.headline)
                 .bold()
@@ -42,16 +44,28 @@ struct MovieDetailsView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.green)
+        .toolbar(content: {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    model.close()
+                } label: {
+                    HStack {
+                        Image(systemName: "xmark")
+                    }
+                }
+            }
+        })
     }
 }
 
 #Preview {
     MovieDetailsView(
-        movie: .init(id: "12cfb892-aac0-4c5b-94af-521852e46d6a",
+        model: MovieDetailsModel(movie: .init(id: "12cfb892-aac0-4c5b-94af-521852e46d6a",
                      title: "Grave of the Fireflies",
                      image: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/qG3RYlIVpTYclR9TYIsy8p7m7AT.jpg",
+                     movie_banner:"https://image.tmdb.org/t/p/original/vkZSd0Lp8iCVBGpFH9L7LzLusjS.jpg",
                      description: "In the latter part of World War II, a boy and his sister, orphaned when their mother is killed in the firebombing of Tokyo, are left to survive on their own in what remains of civilian life in Japan. The plot follows this boy and his sister as they do their best to survive in the Japanese countryside, battling hunger, prejudice, and pride in their own quiet, personal battle.",
                      release_date: "1988", rt_score: "95", running_time: "2025")
+        )
     )
 }

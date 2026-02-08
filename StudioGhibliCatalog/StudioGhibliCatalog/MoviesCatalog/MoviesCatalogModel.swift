@@ -7,28 +7,26 @@
 
 import Foundation
 import SwiftUI
-
-enum Destination: Hashable {
-    case movieDetails(Movie)
-}
+import SwiftNavigation
 
 @MainActor
 @Observable
 class MoviesCatalogModel {
+    // MARK: Enums
+    @CasePathable
+    enum Destination {
+        case movieDetails(MovieDetailsModel)
+    }
+
     enum State {
         case loading
         case loaded([Movie])
         case error(Error)
     }
 
+
+    // MARK: Properties
     private let movieService: MovieService = MovieService()
-//    var destination: Destination()
-    var path = NavigationPath()
-    var state: State = .loading {
-        didSet {
-            handleState()
-        }
-    }
     var movieCatalog: [Movie] = []
     var splitedArray: [[Movie]] {
         movieCatalog.enumerated().reduce(into: [[], []]) { result, item in
@@ -36,10 +34,22 @@ class MoviesCatalogModel {
         }
     }
 
+    var destination: Destination? {
+        didSet {
+            bindDestination()
+        }
+    }
+    var state: State = .loading {
+        didSet {
+            handleState()
+        }
+    }
+
     init() {
         handleState()
     }
 
+    // MARK: Methods
     func loadMovies() async {
         let result = await movieService.fetchMovies()
 
@@ -65,7 +75,17 @@ class MoviesCatalogModel {
     }
 
     func navigateToDetails(movie: Movie) {
-        path.append(Destination.movieDetails(movie))
-//        destination = .movieDetails(movie)
+        destination = .movieDetails(MovieDetailsModel(movie: movie))
+    }
+
+    func bindDestination() {
+        switch destination {
+        case .movieDetails(let model):
+            model.onClose = { [weak self] in
+                self?.destination = nil
+            }
+        case nil:
+            break
+        }
     }
 }

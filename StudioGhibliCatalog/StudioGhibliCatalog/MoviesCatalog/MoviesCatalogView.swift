@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftUINavigation
 
 struct MoviesCatalogView: View {
     @State var model: MoviesCatalogModel
 
     var body: some View {
-        NavigationStack(path: $model.path) {
+        NavigationStack {
             switch model.state {
             case .loading:
                 ProgressView()
@@ -48,17 +49,18 @@ struct CatalogView: View {
                 LazyVStack(spacing: 16) {
                     ForEach(model.splitedArray[1]) { movie in
                         MovieBanner(movie: movie)
+                            .onTapGesture { _ in
+                                model.navigateToDetails(movie: movie)
+                            }
                     }
                 }
                 .padding(.top, 40)
             }
-//            .sheet(for: Destination.self) { movie in
-//                MovieDetailsView(movie: movie)
-//            }
-            .navigationDestination(for: Destination.self) { destination in
-                switch destination {
-                case .movieDetails(let movie):
-                    MovieDetailsView(movie: movie)
+            .sheet(item: $model.destination.movieDetails, onDismiss: {
+                model.destination = nil
+            }) { model in
+                NavigationStack {
+                    MovieDetailsView(model: model)
                 }
             }
         }
@@ -104,7 +106,7 @@ struct MovieBanner: View {
                     .padding(.top, 14)
                 }
             } placeholder: {
-                Color.gray.opacity(0.2)
+                Color.gray
                     .modifier(ShimmerModifier())
             }
             .frame(maxWidth: .infinity)
