@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		973055702F3908100090A5FC /* SwiftNavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 9730556F2F3908100090A5FC /* SwiftNavigation */; };
+		973055722F3908100090A5FC /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 973055712F3908100090A5FC /* SwiftUINavigation */; };
+		973055752F3908250090A5FC /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = 973055742F3908250090A5FC /* SwiftUINavigation */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9765E2182F32C11900F80BBD /* StudioGhibliCatalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudioGhibliCatalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,16 +29,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				973055722F3908100090A5FC /* SwiftUINavigation in Frameworks */,
+				973055702F3908100090A5FC /* SwiftNavigation in Frameworks */,
+				973055752F3908250090A5FC /* SwiftUINavigation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9730553D2F3903060090A5FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9765E20F2F32C11900F80BBD = {
 			isa = PBXGroup;
 			children = (
 				9765E21A2F32C11900F80BBD /* StudioGhibliCatalog */,
+				9730553D2F3903060090A5FC /* Frameworks */,
 				9765E2192F32C11900F80BBD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +82,9 @@
 			);
 			name = StudioGhibliCatalog;
 			packageProductDependencies = (
+				9730556F2F3908100090A5FC /* SwiftNavigation */,
+				973055712F3908100090A5FC /* SwiftUINavigation */,
+				973055742F3908250090A5FC /* SwiftUINavigation */,
 			);
 			productName = StudioGhibliCatalog;
 			productReference = 9765E2182F32C11900F80BBD /* StudioGhibliCatalog.app */;
@@ -95,7 +115,8 @@
 			mainGroup = 9765E20F2F32C11900F80BBD;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				9730553C2F3900CF0090A5FC /* XCRemoteSwiftPackageReference "swift-navigation" */,
+				9730556E2F3908100090A5FC /* XCRemoteSwiftPackageReference "swift-navigation" */,
+				973055732F3908250090A5FC /* XCRemoteSwiftPackageReference "swiftui-navigation" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9765E2192F32C11900F80BBD /* Products */;
@@ -339,7 +360,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		9730553C2F3900CF0090A5FC /* XCRemoteSwiftPackageReference "swift-navigation" */ = {
+		9730556E2F3908100090A5FC /* XCRemoteSwiftPackageReference "swift-navigation" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-navigation.git";
 			requirement = {
@@ -347,7 +368,33 @@
 				minimumVersion = 2.6.0;
 			};
 		};
+		973055732F3908250090A5FC /* XCRemoteSwiftPackageReference "swiftui-navigation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swiftui-navigation.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.5;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9730556F2F3908100090A5FC /* SwiftNavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9730556E2F3908100090A5FC /* XCRemoteSwiftPackageReference "swift-navigation" */;
+			productName = SwiftNavigation;
+		};
+		973055712F3908100090A5FC /* SwiftUINavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9730556E2F3908100090A5FC /* XCRemoteSwiftPackageReference "swift-navigation" */;
+			productName = SwiftUINavigation;
+		};
+		973055742F3908250090A5FC /* SwiftUINavigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 973055732F3908250090A5FC /* XCRemoteSwiftPackageReference "swiftui-navigation" */;
+			productName = SwiftUINavigation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9765E2102F32C11900F80BBD /* Project object */;
 }
