@@ -8,37 +8,34 @@
 import SwiftUI
 
 struct ShimmerModifier: ViewModifier {
-    @State private var startPoint = UnitPoint(x: -1.8, y: -1.2)
-    @State private var endPoint = UnitPoint(x: 0, y: -0.2)
-    @State private var isVisible = false
+    @State var isInitialState: Bool = true
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
-            .overlay(
+            .mask {
                 LinearGradient(
-                    colors: [
-                        Color.gray.opacity(0.4),
-                        Color.white.opacity(0.7),
-                        Color.gray.opacity(0.4)
-                    ],
-                    startPoint: startPoint,
-                    endPoint: endPoint
+                    colors: [Color.white.opacity(0.5), Color.white.opacity(0.4), Color.white.opacity(0.5)],
+                    startPoint: (isInitialState ? .init(x: -2, y: -2) : .init(x: 1, y: 1)),
+                    endPoint: (isInitialState ? .init(x: 1, y: 0.2) : .init(x: 1.3, y: 1.3))
                 )
-                .mask(content)
-                .onChange(of: isVisible) { visible, _ in
-                    if visible {
-                        withAnimation(
-                            .linear(duration: 1.5)
-                            .repeatForever(autoreverses: false)
-                        ) {
-                            startPoint = UnitPoint(x: 1, y: 1.2)
-                            endPoint = UnitPoint(x: 2.2, y: 2.4)
-                        }
-                    }
-                }
-            )
-            .onAppear { isVisible = true }
-            .onDisappear { isVisible = false }
-            .clipped()
+            }
+            .animation(.linear(duration: 2).repeatForever(autoreverses: false), value: isInitialState)
+            .onAppear() {
+                isInitialState = false
+            }
     }
+}
+
+struct teste: View {
+    var body: some View {
+        VStack {
+            Color.gray
+        }
+        .frame(width: 250, height: 450)
+        .modifier(ShimmerModifier())
+    }
+}
+
+#Preview {
+    teste()
 }
