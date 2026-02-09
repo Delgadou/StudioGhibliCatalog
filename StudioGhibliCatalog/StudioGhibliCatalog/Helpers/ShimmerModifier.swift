@@ -19,14 +19,14 @@ struct ShimmerModifier: ViewModifier {
                     endPoint: (isInitialState ? .init(x: 1, y: 0.2) : .init(x: 1.3, y: 1.3))
                 )
             }
-            .animation(.linear(duration: 2).repeatForever(autoreverses: false), value: isInitialState)
+            .animation(.linear(duration: 1).repeatForever(autoreverses: false), value: isInitialState)
             .onAppear() {
                 isInitialState = false
             }
     }
 }
 
-struct teste: View {
+struct ShimmerPreview: View {
     var body: some View {
         VStack {
             Color.gray
@@ -37,5 +37,5 @@ struct teste: View {
 }
 
 #Preview {
-    teste()
+    ShimmerPreview()
 }
