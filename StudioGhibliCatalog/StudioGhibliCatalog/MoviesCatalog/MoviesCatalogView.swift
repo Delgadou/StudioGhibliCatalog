@@ -6,26 +6,20 @@
 //
 
 import SwiftUI
+import SwiftUINavigation
 
 struct MoviesCatalogView: View {
     @State var model: MoviesCatalogModel
 
     var body: some View {
-        NavigationStack(path: $model.path) {
+        NavigationStack {
             switch model.state {
             case .loading:
                 ProgressView()
             case .loaded:
                 CatalogView(model: $model)
             case .error(let error):
-                VStack {
-                    Text("Error: \(error.localizedDescription)")
-                    Button("Retry") {
-                        Task {
-                            await model.loadMovies()
-                        }
-                    }
-                }
+                ErrorView(error: error, onTryAgain: model.tryLoadMoviesAgain)
             }
         }
     }
@@ -48,17 +42,18 @@ struct CatalogView: View {
                 LazyVStack(spacing: 16) {
                     ForEach(model.splitedArray[1]) { movie in
                         MovieBanner(movie: movie)
+                            .onTapGesture { _ in
+                                model.navigateToDetails(movie: movie)
+                            }
                     }
                 }
                 .padding(.top, 40)
             }
-//            .sheet(for: Destination.self) { movie in
-//                MovieDetailsView(movie: movie)
-//            }
-            .navigationDestination(for: Destination.self) { destination in
-                switch destination {
-                case .movieDetails(let movie):
-                    MovieDetailsView(movie: movie)
+            .sheet(item: $model.destination.movieDetails, onDismiss: {
+                model.destination = nil
+            }) { model in
+                NavigationStack {
+                    MovieDetailsView(model: model)
                 }
             }
         }
@@ -66,7 +61,7 @@ struct CatalogView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Text("Movies")
                     .font(.largeTitle.bold())
-                    .foregroundStyle(.textPrimary)
+                    .foregroundStyle(.primary)
                     .padding(.leading, 4)
                     .fixedSize(horizontal: true, vertical: false)
             }
@@ -95,6 +90,7 @@ struct MovieBanner: View {
                         Text(movie.rt_score)
                             .font(.subheadline)
                             .fontWeight(.semibold)
+                            .foregroundStyle(.black)
                     }
                     .padding(.horizontal, 7)
                     .padding(.vertical, 3)
@@ -104,7 +100,7 @@ struct MovieBanner: View {
                     .padding(.top, 14)
                 }
             } placeholder: {
-                Color.gray.opacity(0.2)
+                Color.gray
                     .modifier(ShimmerModifier())
             }
             .frame(maxWidth: .infinity)
@@ -113,21 +109,50 @@ struct MovieBanner: View {
 
             Text(movie.title)
                 .font(.headline)
-                .foregroundStyle(.textPrimary)
+                .foregroundStyle(.primary)
                 .padding(.top, 2)
 
             HStack {
                 Text(movie.release_date)
-                    .foregroundStyle(.textSecondary)
+                    .foregroundStyle(.secondary)
 
                 Text("|")
-                    .foregroundStyle(.textSecondary)
+                    .foregroundStyle(.secondary)
                     .padding(.bottom, 4)
 
                 Text("\(movie.running_time)min")
-                    .foregroundStyle(.textSecondary)
+                    .foregroundStyle(.secondary)
             }
         }
+    }
+}
+
+struct ErrorView: View {
+    let error: Error
+    let onTryAgain: (() -> Void)?
+
+    var body: some View {
+        VStack {
+            Text("Error")
+                .font(.largeTitle)
+                .bold()
+                .foregroundColor(.red)
+
+            Text(error.localizedDescription)
+
+            Button {
+                //Apertar botao
+            } label: {
+                Text("Try again")
+                    .bold()
+                    .foregroundStyle(Color.white)
+                    .frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding()
+        }
+        .padding()
     }
 }
 
