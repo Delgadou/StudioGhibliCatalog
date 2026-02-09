@@ -61,7 +61,7 @@ struct CatalogView: View {
             ToolbarItem(placement: .topBarLeading) {
                 Text("Movies")
                     .font(.largeTitle.bold())
-                    .foregroundStyle(.textPrimary)
+                    .foregroundStyle(.primary)
                     .padding(.leading, 4)
                     .fixedSize(horizontal: true, vertical: false)
             }
@@ -90,6 +90,7 @@ struct MovieBanner: View {
                         Text(movie.rt_score)
                             .font(.subheadline)
                             .fontWeight(.semibold)
+                            .foregroundStyle(.black)
                     }
                     .padding(.horizontal, 7)
                     .padding(.vertical, 3)
@@ -108,19 +109,19 @@ struct MovieBanner: View {
 
             Text(movie.title)
                 .font(.headline)
-                .foregroundStyle(.textPrimary)
+                .foregroundStyle(.primary)
                 .padding(.top, 2)
 
             HStack {
                 Text(movie.release_date)
-                    .foregroundStyle(.textSecondary)
+                    .foregroundStyle(.secondary)
 
                 Text("|")
-                    .foregroundStyle(.textSecondary)
+                    .foregroundStyle(.secondary)
                     .padding(.bottom, 4)
 
                 Text("\(movie.running_time)min")
-                    .foregroundStyle(.textSecondary)
+                    .foregroundStyle(.secondary)
             }
         }
     }
