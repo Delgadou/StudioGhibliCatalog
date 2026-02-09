@@ -15,7 +15,7 @@ struct MoviesCatalogView: View {
         NavigationStack {
             switch model.state {
             case .loading:
-                ProgressView()
+                SkeletonMovieCatalogView()
             case .loaded:
                 CatalogView(model: $model)
             case .error(let error):
