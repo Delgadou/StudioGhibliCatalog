@@ -1,5 +1,5 @@
 {
-  "originHash" : "911fe043932198f00b24a0a6202466852ad581a54a67cb27512dbc868f5414b9",
+  "originHash" : "c89dd7c49fb133779449ba4387257d5375173f590951e0ba78051dfdd4940ec3",
   "pins" : [
     {
       "identity" : "swift-case-paths",
@@ -62,15 +62,6 @@
       "state" : {
         "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
         "version" : "602.0.0"
-      }
-    },
-    {
-      "identity" : "swiftui-navigation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swiftui-navigation.git",
-      "state" : {
-        "revision" : "e628806aeaa9efe25c1abcd97931a7c498fab281",
-        "version" : "1.5.5"
       }
     },
     {
