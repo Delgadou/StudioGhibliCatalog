@@ -129,7 +129,7 @@ struct MovieBanner: View {
 
 struct ErrorView: View {
     let error: Error
-    let onTryAgain: (() -> Void)?
+    let onTryAgain: (() -> Void)
 
     var body: some View {
         VStack {
@@ -141,7 +141,7 @@ struct ErrorView: View {
             Text(error.localizedDescription)
 
             Button {
-                //Apertar botao
+                onTryAgain()
             } label: {
                 Text("Try again")
                     .bold()
