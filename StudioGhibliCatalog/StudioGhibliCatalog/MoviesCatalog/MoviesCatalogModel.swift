@@ -88,4 +88,8 @@ class MoviesCatalogModel {
             break
         }
     }
+
+    func tryLoadMoviesAgain() {
+        state = .loading
+    }
 }

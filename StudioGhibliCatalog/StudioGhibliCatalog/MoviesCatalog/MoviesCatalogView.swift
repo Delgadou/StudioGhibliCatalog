@@ -19,14 +19,7 @@ struct MoviesCatalogView: View {
             case .loaded:
                 CatalogView(model: $model)
             case .error(let error):
-                VStack {
-                    Text("Error: \(error.localizedDescription)")
-                    Button("Retry") {
-                        Task {
-                            await model.loadMovies()
-                        }
-                    }
-                }
+                ErrorView(error: error, onTryAgain: model.tryLoadMoviesAgain)
             }
         }
     }
@@ -130,6 +123,35 @@ struct MovieBanner: View {
                     .foregroundStyle(.textSecondary)
             }
         }
+    }
+}
+
+struct ErrorView: View {
+    let error: Error
+    let onTryAgain: (() -> Void)?
+
+    var body: some View {
+        VStack {
+            Text("Error")
+                .font(.largeTitle)
+                .bold()
+                .foregroundColor(.red)
+
+            Text(error.localizedDescription)
+
+            Button {
+                //Apertar botao
+            } label: {
+                Text("Try again")
+                    .bold()
+                    .foregroundStyle(Color.white)
+                    .frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding()
+        }
+        .padding()
     }
 }
 
