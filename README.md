@@ -18,6 +18,7 @@ Após ter os requisitos minimos:
 **Catálogo de Filmes**
 - Visualização em grade de dois cards por linha com todos os filmes do Studio Ghibli
 - Detalhes do Filme: Tela dedicada com informações completas sobre cada filme
+- Aplicativo em Light e Dark mode.
 - Design Responsivo: Interface adaptada para diferentes tamanhos de tela
 - Estados de Carregamento: Skeletons com efeito shimmer durante o carregamento
 - Tratamento de Erros: Tela de erro com opção para tentar novamente
@@ -40,6 +41,7 @@ A navegação é baseada em enums por:
 
 - Garantir que apenas uma navegação aconteça por vez.
 - View reage ao valor atual do Enum e navega com segurança ao destino.
+- Escalabilidade melhor.
 - Type-safe (sem erros de digitação).
 - Mais fácil de ser testado.
 
@@ -52,7 +54,7 @@ enum Destination {
 ```
 
 ## Gerenciamento de Estado
-Estados controlados por enums para clareza e segurança. View reage a mudança de estado, para auxiliar nisso também é usado o @MainActor que faz com que as tarefas sejam executadas na main thread. Ja passei por casos que a view travava ao ser atualizada, a solução era usar o main actor.
+Estados controlados por enums para clareza e segurança. View reage a mudança de estado.
 ```
 enum State {
     case loading
@@ -60,6 +62,7 @@ enum State {
     case error(Error)
 }
 ```
+### Utilização de @MainActor na viewModel para garantir que as requisições da api sejam feitas na main thread e que a view atualize assim que os filmes forem carregados.
 ### O que eu faria no aplicativo com mais tempo?
 * Criar protocolo de NetworkService, que ajudaria na implementação de testes.
 * Implementação de testes para o NetworkService e ViewModels.
