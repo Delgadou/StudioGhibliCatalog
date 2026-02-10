@@ -12,7 +12,7 @@ import SwiftNavigation
 @MainActor
 @Observable
 class MoviesCatalogModel {
-    // MARK: Enums
+    // MARK: - Nested Types
     @CasePathable
     enum Destination {
         case movieDetails(MovieDetailsModel)
@@ -25,7 +25,7 @@ class MoviesCatalogModel {
     }
 
 
-    // MARK: Properties
+    // MARK:  - Properties
     private let movieService: MovieService = MovieService()
     var movieCatalog: [Movie] = []
     var splitedArray: [[Movie]] {
@@ -49,7 +49,7 @@ class MoviesCatalogModel {
         handleState()
     }
 
-    // MARK: Methods
+    // MARK: - Methods
     func loadMovies() async {
         let result = await movieService.fetchMovies()
 
